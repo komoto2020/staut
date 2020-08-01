@@ -14,5 +14,11 @@ namespace staut
 		{
 			InitializeComponent();
 		}
+
+		//「プログラムを追加」ボタン
+		private void addProgButton_Click(object sender, EventArgs e)
+		{
+			
+		}
 	}
 }

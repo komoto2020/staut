@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ namespace staut
 {
 	public partial class InitForm : Form
 	{
+		private const string ADD = "add";
+		private const string DELETE = "delete";
+
 		public InitForm()
 		{
 			InitializeComponent();
@@ -22,8 +26,24 @@ namespace staut
 
 		}
 
-		private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		//メニューバーの項目がクリックされた場合
+		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
+			Console.WriteLine(e.ClickedItem.GetType());
+			var item = e.ClickedItem as ToolStripButton;
+			Console.WriteLine(item.Tag);
+			switch (item.Tag)
+			{
+				//追加ボタン
+				case ADD:
+					addEditForm addeditform = new addEditForm();
+					addeditform.ShowDialog();
+					break;
+
+				//一括削除ボタン
+				case DELETE:
+					break;
+			}
 
 		}
 	}
