@@ -13,8 +13,6 @@ namespace staut
 {
 	public partial class InitForm : Form
 	{
-		private const string ADD = "add";
-		private const string DELETE = "delete";
 
 		public InitForm()
 		{
@@ -29,13 +27,15 @@ namespace staut
 		//メニューバーの項目がクリックされた場合
 		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
-			Console.WriteLine(e.ClickedItem.GetType());
+			const string ADD = "add";
+			const string DELETE = "delete";
+
 			var item = e.ClickedItem as ToolStripButton;
-			Console.WriteLine(item.Tag);
 			switch (item.Tag)
 			{
 				//追加ボタン
 				case ADD:
+					Console.WriteLine("Clicked addButton in InitForm.");
 					addEditForm addeditform = new addEditForm();
 					addeditform.ShowDialog();
 					break;

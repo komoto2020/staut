@@ -32,14 +32,14 @@
 			this.settitleTextBox = new System.Windows.Forms.TextBox();
 			this.wdirLabel = new System.Windows.Forms.Label();
 			this.wdirTextBox = new System.Windows.Forms.TextBox();
-			this.prognameLabel01 = new System.Windows.Forms.Label();
-			this.prognameTextBox01 = new System.Windows.Forms.TextBox();
-			this.pathLabel01 = new System.Windows.Forms.Label();
-			this.pathTextBox01 = new System.Windows.Forms.TextBox();
+			this.prognameLabel1 = new System.Windows.Forms.Label();
+			this.prognameTextBox1 = new System.Windows.Forms.TextBox();
+			this.pathLabel1 = new System.Windows.Forms.Label();
+			this.pathTextBox1 = new System.Windows.Forms.TextBox();
 			this.decideButton = new System.Windows.Forms.Button();
 			this.addProgButton = new System.Windows.Forms.Button();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel1.SuspendLayout();
+			this.allProgPanel = new System.Windows.Forms.Panel();
+			this.allProgPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// settileLabel
@@ -74,37 +74,37 @@
 			this.wdirTextBox.Size = new System.Drawing.Size(150, 31);
 			this.wdirTextBox.TabIndex = 3;
 			// 
-			// prognameLabel01
+			// prognameLabel1
 			// 
-			this.prognameLabel01.AutoSize = true;
-			this.prognameLabel01.Location = new System.Drawing.Point(204, 0);
-			this.prognameLabel01.Name = "prognameLabel01";
-			this.prognameLabel01.Size = new System.Drawing.Size(97, 25);
-			this.prognameLabel01.TabIndex = 4;
-			this.prognameLabel01.Text = "プログラム名";
+			this.prognameLabel1.AutoSize = true;
+			this.prognameLabel1.Location = new System.Drawing.Point(204, 0);
+			this.prognameLabel1.Name = "prognameLabel1";
+			this.prognameLabel1.Size = new System.Drawing.Size(97, 25);
+			this.prognameLabel1.TabIndex = 4;
+			this.prognameLabel1.Text = "プログラム名";
 			// 
-			// prognameTextBox01
+			// prognameTextBox1
 			// 
-			this.prognameTextBox01.Location = new System.Drawing.Point(204, 28);
-			this.prognameTextBox01.Name = "prognameTextBox01";
-			this.prognameTextBox01.Size = new System.Drawing.Size(150, 31);
-			this.prognameTextBox01.TabIndex = 5;
+			this.prognameTextBox1.Location = new System.Drawing.Point(204, 28);
+			this.prognameTextBox1.Name = "prognameTextBox1";
+			this.prognameTextBox1.Size = new System.Drawing.Size(150, 31);
+			this.prognameTextBox1.TabIndex = 5;
 			// 
-			// pathLabel01
+			// pathLabel1
 			// 
-			this.pathLabel01.AutoSize = true;
-			this.pathLabel01.Location = new System.Drawing.Point(423, 0);
-			this.pathLabel01.Name = "pathLabel01";
-			this.pathLabel01.Size = new System.Drawing.Size(41, 25);
-			this.pathLabel01.TabIndex = 6;
-			this.pathLabel01.Text = "パス";
+			this.pathLabel1.AutoSize = true;
+			this.pathLabel1.Location = new System.Drawing.Point(423, 0);
+			this.pathLabel1.Name = "pathLabel1";
+			this.pathLabel1.Size = new System.Drawing.Size(41, 25);
+			this.pathLabel1.TabIndex = 6;
+			this.pathLabel1.Text = "パス";
 			// 
-			// pathTextBox01
+			// pathTextBox1
 			// 
-			this.pathTextBox01.Location = new System.Drawing.Point(423, 28);
-			this.pathTextBox01.Name = "pathTextBox01";
-			this.pathTextBox01.Size = new System.Drawing.Size(150, 31);
-			this.pathTextBox01.TabIndex = 7;
+			this.pathTextBox1.Location = new System.Drawing.Point(423, 28);
+			this.pathTextBox1.Name = "pathTextBox1";
+			this.pathTextBox1.Size = new System.Drawing.Size(150, 31);
+			this.pathTextBox1.TabIndex = 7;
 			// 
 			// decideButton
 			// 
@@ -126,24 +126,25 @@
 			this.addProgButton.UseVisualStyleBackColor = true;
 			this.addProgButton.Click += new System.EventHandler(this.addProgButton_Click);
 			// 
-			// panel1
+			// allProgPanel
 			// 
-			this.panel1.AutoScroll = true;
-			this.panel1.Controls.Add(this.prognameLabel01);
-			this.panel1.Controls.Add(this.prognameTextBox01);
-			this.panel1.Controls.Add(this.pathLabel01);
-			this.panel1.Controls.Add(this.pathTextBox01);
-			this.panel1.Location = new System.Drawing.Point(-1, 183);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(802, 145);
-			this.panel1.TabIndex = 10;
+			this.allProgPanel.AutoScroll = true;
+			this.allProgPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+			this.allProgPanel.Controls.Add(this.prognameLabel1);
+			this.allProgPanel.Controls.Add(this.prognameTextBox1);
+			this.allProgPanel.Controls.Add(this.pathLabel1);
+			this.allProgPanel.Controls.Add(this.pathTextBox1);
+			this.allProgPanel.Location = new System.Drawing.Point(-1, 183);
+			this.allProgPanel.Name = "allProgPanel";
+			this.allProgPanel.Size = new System.Drawing.Size(802, 145);
+			this.allProgPanel.TabIndex = 10;
 			// 
 			// addEditForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.allProgPanel);
 			this.Controls.Add(this.addProgButton);
 			this.Controls.Add(this.decideButton);
 			this.Controls.Add(this.wdirTextBox);
@@ -152,8 +153,8 @@
 			this.Controls.Add(this.settileLabel);
 			this.Name = "addEditForm";
 			this.Text = "addEditForm";
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.allProgPanel.ResumeLayout(false);
+			this.allProgPanel.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -165,12 +166,12 @@
 		private System.Windows.Forms.TextBox settitleTextBox;
 		private System.Windows.Forms.Label wdirLabel;
 		private System.Windows.Forms.TextBox wdirTextBox;
-		private System.Windows.Forms.Label prognameLabel01;
-		private System.Windows.Forms.TextBox prognameTextBox01;
-		private System.Windows.Forms.Label pathLabel01;
-		private System.Windows.Forms.TextBox pathTextBox01;
+		private System.Windows.Forms.Label prognameLabel1;
+		private System.Windows.Forms.TextBox prognameTextBox1;
+		private System.Windows.Forms.Label pathLabel1;
+		private System.Windows.Forms.TextBox pathTextBox1;
 		private System.Windows.Forms.Button decideButton;
 		private System.Windows.Forms.Button addProgButton;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel allProgPanel;
 	}
 }
