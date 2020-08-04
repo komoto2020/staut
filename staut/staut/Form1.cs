@@ -30,13 +30,12 @@ namespace staut
 			const string ADD = "add";
 			const string DELETE = "delete";
 
-			Console.WriteLine(e.ClickedItem.GetType());
 			var item = e.ClickedItem as ToolStripButton;
-			Console.WriteLine(item.Tag);
 			switch (item.Tag)
 			{
 				//追加ボタン
 				case ADD:
+					Console.WriteLine("Clicked addButton in InitForm.");
 					addEditForm addeditform = new addEditForm();
 					addeditform.ShowDialog();
 					break;
