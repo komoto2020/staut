@@ -19,6 +19,39 @@ namespace staut
 			numberofAPBClicks = 0;
 		}
 
+		//作業ディレクトリ「参照」ボタン
+		private void wdirRefeButton_Click(object sender, EventArgs e)
+		{
+			FolderBrowserDialog dialog = new FolderBrowserDialog();
+			dialog.SelectedPath = Environment.CurrentDirectory;
+			if (dialog.ShowDialog() == DialogResult.OK)
+			{
+				wdirTextBox.Text = dialog.SelectedPath;
+			}
+			else
+			{
+				Console.WriteLine("canceled wdirRefButton Dialog");
+			}
+			dialog.Dispose();
+		}
+
+
+		private void progRefeButton_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.InitialDirectory = Environment.CurrentDirectory;
+			if (dialog.ShowDialog() == DialogResult.OK)
+			{
+				pathTextBox1.Text = dialog.InitialDirectory;
+			}
+			else
+			{
+				Console.WriteLine("canceled progRefButton Dialog");
+			}
+			dialog.Dispose();
+		}
+
+
 		//「プログラムを追加」ボタン
 		private void addProgButton_Click(object sender, EventArgs e)
 		{
@@ -26,8 +59,8 @@ namespace staut
 			numberofAPBClicks++; //クリック回数のカウント
 
 			//prognameLabel
-			string PNLABEL_NAME = $"prognameLabel{numberofAPBClicks}";
-			const string PNLABEL_TEXT = "プログラム名";
+			string PNLABEL_NAME = $"prognameLabel{numberofAPBClicks+1}";
+			string PNLABEL_TEXT = $"{numberofAPBClicks+1}. プログラム名";
 			const int PNLABEL_OFFSET = 100;
 			int[] PNLABEL_LOCATE = {
 				prognameLabel1.Location.X, //X座標
@@ -35,7 +68,7 @@ namespace staut
 			};
 
 			//pathLabel
-			string PATHLABEL_NAME = $"pathLabel{numberofAPBClicks}";
+			string PATHLABEL_NAME = $"pathLabel{numberofAPBClicks+1}";
 			const string PATHLABEL_TEXT = "パス";
 			const int PATHLABEL_OFFSET = 100;
 			int[] PATHLABEL_LOCATE = {
@@ -44,7 +77,7 @@ namespace staut
 			};
 
 			//prognameTextBox
-			string PNBOX_NAME = $"prognameTextBox{numberofAPBClicks}";
+			string PNBOX_NAME = $"prognameTextBox{numberofAPBClicks+1}";
 			const int PNBOX_OFFSET = 100; //テキストボックス間の距離（Y）
 			const int PNBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
 			int[] PNBOX_LOCATE = { 
@@ -57,7 +90,7 @@ namespace staut
 			};
 
 			//pathTextBox
-			string PATHBOX_NAME = $"pathTextBox{numberofAPBClicks}";
+			string PATHBOX_NAME = $"pathTextBox{numberofAPBClicks+1}";
 			const int PATHBOX_OFFSET = 100;
 			const int PATHBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
 			int[] PATHBOX_LOCATE = {
@@ -69,15 +102,31 @@ namespace staut
 				pathTextBox1.Size.Height //テキストボックス高さ
 			};
 
+			//progRefeButton
+			string PRBUTTON_NAME = $"progRefeButton{numberofAPBClicks+1}";
+			const string PRBUTTON_TEXT = "参照";
+			const int PRBUTTON_OFFSET = 100;
+			const int PRBUTTON_FIRST_OFFSET = 28;
+			int[] PRBUTTON_LOCATE ={
+				progRefeButton1.Location.X,
+				PRBUTTON_OFFSET * numberofAPBClicks + PRBUTTON_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y
+			};
+			int[] PRBUTTON_SIZE ={
+				progRefeButton1.Size.Width,
+				progRefeButton1.Size.Height
+			};
+
 			createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE);
 			createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE);
 			createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE);
 			createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
+			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_LOCATE, PRBUTTON_SIZE);
 		}
 
 		private void createLabel(string name, string text, int[] locate)
 		{
 			Label label = new Label();
+			label.Name = name;
 			label.Location = new Point(locate[0], locate[1]);
 			label.Text = text;
 			allProgPanel.Controls.Add(label);
@@ -86,9 +135,21 @@ namespace staut
 		private void createTextBox(string name, int[] locate, int[] size)
 		{
 			TextBox textBox = new TextBox();
+			textBox.Name = name;
 			textBox.Location = new Point(locate[0], locate[1]);
 			textBox.Size = new Size(size[0], size[1]);
 			allProgPanel.Controls.Add(textBox);
 		}
+
+		private void createButton(string name, string text, int[] locate, int[] size)
+		{
+			Button button = new Button();
+			button.Name = name;
+			button.Text = text;
+			button.Location = new Point(locate[0], locate[1]);
+			button.Size = new Size(size[0], size[1]);
+			allProgPanel.Controls.Add(button);
+		}
+
 	}
 }
