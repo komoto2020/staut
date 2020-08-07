@@ -148,6 +148,7 @@
 			this.progRefeButton1.Name = "progRefeButton1";
 			this.progRefeButton1.Size = new System.Drawing.Size(74, 31);
 			this.progRefeButton1.TabIndex = 11;
+			this.progRefeButton1.Tag = "1";
 			this.progRefeButton1.Text = "参照";
 			this.progRefeButton1.UseVisualStyleBackColor = true;
 			this.progRefeButton1.Click += new System.EventHandler(this.progRefeButton_Click);

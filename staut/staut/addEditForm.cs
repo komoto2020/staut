@@ -12,11 +12,14 @@ namespace staut
 	public partial class addEditForm : Form
 	{
 		private int numberofAPBClicks;  //「プログラムを追加」ボタンが押された回数
+		private TextBox[] pathTextBoxes; //パステキストボックスの集まり
+		private const int PROG_NUM = 10; //同時に起動できるファイルの数
 
 		public addEditForm()
 		{
 			InitializeComponent();
 			numberofAPBClicks = 0;
+			pathTextBoxes = new TextBox[PROG_NUM];
 		}
 
 		//作業ディレクトリ「参照」ボタン
@@ -38,11 +41,13 @@ namespace staut
 
 		private void progRefeButton_Click(object sender, EventArgs e)
 		{
+			Button button = sender as Button;
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory;
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				pathTextBox1.Text = dialog.InitialDirectory;
+				int tag = Convert.ToInt32(button.Tag);
+				pathTextBoxes[tag - 1].Text = dialog.InitialDirectory;
 			}
 			else
 			{
@@ -57,6 +62,14 @@ namespace staut
 		{
 			Console.WriteLine("Clicked addProgramButton in addEditForm");
 			numberofAPBClicks++; //クリック回数のカウント
+
+			//パステキストボックスの作成上限数を超えた場合（プログラム追加上限数を超えた場合）
+			if (numberofAPBClicks >= PROG_NUM) 
+			{
+				MessageBox.Show("これ以上プログラムを追加できません。","エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
 
 			//prognameLabel
 			string PNLABEL_NAME = $"prognameLabel{numberofAPBClicks+1}";
@@ -105,6 +118,7 @@ namespace staut
 			//progRefeButton
 			string PRBUTTON_NAME = $"progRefeButton{numberofAPBClicks+1}";
 			const string PRBUTTON_TEXT = "参照";
+			int PRBUTTON_TAG = numberofAPBClicks + 1;
 			const int PRBUTTON_OFFSET = 100;
 			const int PRBUTTON_FIRST_OFFSET = 28;
 			int[] PRBUTTON_LOCATE ={
@@ -119,8 +133,9 @@ namespace staut
 			createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE);
 			createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE);
 			createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE);
-			createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
-			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_LOCATE, PRBUTTON_SIZE);
+			TextBox pathTextBox = createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
+			pathTextBoxes[numberofAPBClicks] = pathTextBox;
+			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE);
 		}
 
 		private void createLabel(string name, string text, int[] locate)
@@ -132,22 +147,25 @@ namespace staut
 			allProgPanel.Controls.Add(label);
 		}
 
-		private void createTextBox(string name, int[] locate, int[] size)
+		private TextBox createTextBox(string name, int[] locate, int[] size)
 		{
 			TextBox textBox = new TextBox();
 			textBox.Name = name;
 			textBox.Location = new Point(locate[0], locate[1]);
 			textBox.Size = new Size(size[0], size[1]);
 			allProgPanel.Controls.Add(textBox);
+			return textBox;
 		}
 
-		private void createButton(string name, string text, int[] locate, int[] size)
+		private void createButton(string name, string text, int tag, int[] locate, int[] size)
 		{
 			Button button = new Button();
 			button.Name = name;
 			button.Text = text;
+			button.Tag = tag;
 			button.Location = new Point(locate[0], locate[1]);
 			button.Size = new Size(size[0], size[1]);
+			button.Click += progRefeButton_Click;
 			allProgPanel.Controls.Add(button);
 		}
 
