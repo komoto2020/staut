@@ -22,23 +22,6 @@ namespace staut
 			pathTextBoxes = new TextBox[PROG_NUM];
 		}
 
-		//作業ディレクトリ「参照」ボタン
-		private void wdirRefeButton_Click(object sender, EventArgs e)
-		{
-			FolderBrowserDialog dialog = new FolderBrowserDialog();
-			dialog.SelectedPath = Environment.CurrentDirectory;
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				wdirTextBox.Text = dialog.SelectedPath;
-			}
-			else
-			{
-				Console.WriteLine("canceled wdirRefButton Dialog");
-			}
-			dialog.Dispose();
-		}
-
-
 		private void progRefeButton_Click(object sender, EventArgs e)
 		{
 			Button button = sender as Button;
@@ -168,6 +151,5 @@ namespace staut
 			button.Click += progRefeButton_Click;
 			allProgPanel.Controls.Add(button);
 		}
-
 	}
 }

@@ -30,8 +30,6 @@
 		{
 			this.settileLabel = new System.Windows.Forms.Label();
 			this.settitleTextBox = new System.Windows.Forms.TextBox();
-			this.wdirLabel = new System.Windows.Forms.Label();
-			this.wdirTextBox = new System.Windows.Forms.TextBox();
 			this.prognameLabel1 = new System.Windows.Forms.Label();
 			this.prognameTextBox1 = new System.Windows.Forms.TextBox();
 			this.pathLabel1 = new System.Windows.Forms.Label();
@@ -40,7 +38,6 @@
 			this.addProgButton = new System.Windows.Forms.Button();
 			this.allProgPanel = new System.Windows.Forms.Panel();
 			this.progRefeButton1 = new System.Windows.Forms.Button();
-			this.wdirRefeButton = new System.Windows.Forms.Button();
 			this.allProgPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -60,25 +57,10 @@
 			this.settitleTextBox.Size = new System.Drawing.Size(150, 31);
 			this.settitleTextBox.TabIndex = 1;
 			// 
-			// wdirLabel
-			// 
-			this.wdirLabel.AutoSize = true;
-			this.wdirLabel.Location = new System.Drawing.Point(203, 104);
-			this.wdirLabel.Name = "wdirLabel";
-			this.wdirLabel.Size = new System.Drawing.Size(125, 25);
-			this.wdirLabel.TabIndex = 2;
-			this.wdirLabel.Text = "作業ディレクトリ";
-			// 
-			// wdirTextBox
-			// 
-			this.wdirTextBox.Location = new System.Drawing.Point(422, 101);
-			this.wdirTextBox.Name = "wdirTextBox";
-			this.wdirTextBox.Size = new System.Drawing.Size(150, 31);
-			this.wdirTextBox.TabIndex = 3;
-			// 
 			// prognameLabel1
 			// 
 			this.prognameLabel1.AutoSize = true;
+			this.prognameLabel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
 			this.prognameLabel1.Location = new System.Drawing.Point(204, 0);
 			this.prognameLabel1.Name = "prognameLabel1";
 			this.prognameLabel1.Size = new System.Drawing.Size(116, 25);
@@ -107,6 +89,7 @@
 			this.pathTextBox1.Name = "pathTextBox1";
 			this.pathTextBox1.Size = new System.Drawing.Size(150, 31);
 			this.pathTextBox1.TabIndex = 7;
+			this.pathTextBox1.Tag = "1";
 			// 
 			// decideButton
 			// 
@@ -137,9 +120,9 @@
 			this.allProgPanel.Controls.Add(this.prognameTextBox1);
 			this.allProgPanel.Controls.Add(this.pathLabel1);
 			this.allProgPanel.Controls.Add(this.pathTextBox1);
-			this.allProgPanel.Location = new System.Drawing.Point(-1, 183);
+			this.allProgPanel.Location = new System.Drawing.Point(2, 84);
 			this.allProgPanel.Name = "allProgPanel";
-			this.allProgPanel.Size = new System.Drawing.Size(802, 145);
+			this.allProgPanel.Size = new System.Drawing.Size(802, 263);
 			this.allProgPanel.TabIndex = 10;
 			// 
 			// progRefeButton1
@@ -153,27 +136,14 @@
 			this.progRefeButton1.UseVisualStyleBackColor = true;
 			this.progRefeButton1.Click += new System.EventHandler(this.progRefeButton_Click);
 			// 
-			// wdirRefeButton
-			// 
-			this.wdirRefeButton.Location = new System.Drawing.Point(578, 101);
-			this.wdirRefeButton.Name = "wdirRefeButton";
-			this.wdirRefeButton.Size = new System.Drawing.Size(74, 31);
-			this.wdirRefeButton.TabIndex = 11;
-			this.wdirRefeButton.Text = "参照";
-			this.wdirRefeButton.UseVisualStyleBackColor = true;
-			this.wdirRefeButton.Click += new System.EventHandler(this.wdirRefeButton_Click);
-			// 
 			// addEditForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Controls.Add(this.wdirRefeButton);
 			this.Controls.Add(this.allProgPanel);
 			this.Controls.Add(this.addProgButton);
 			this.Controls.Add(this.decideButton);
-			this.Controls.Add(this.wdirTextBox);
-			this.Controls.Add(this.wdirLabel);
 			this.Controls.Add(this.settitleTextBox);
 			this.Controls.Add(this.settileLabel);
 			this.Name = "addEditForm";
@@ -189,8 +159,6 @@
 
 		private System.Windows.Forms.Label settileLabel;
 		private System.Windows.Forms.TextBox settitleTextBox;
-		private System.Windows.Forms.Label wdirLabel;
-		private System.Windows.Forms.TextBox wdirTextBox;
 		private System.Windows.Forms.Label prognameLabel1;
 		private System.Windows.Forms.TextBox prognameTextBox1;
 		private System.Windows.Forms.Label pathLabel1;
@@ -199,6 +167,5 @@
 		private System.Windows.Forms.Button addProgButton;
 		private System.Windows.Forms.Panel allProgPanel;
 		private System.Windows.Forms.Button progRefeButton1;
-		private System.Windows.Forms.Button wdirRefeButton;
 	}
 }
