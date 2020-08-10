@@ -20,6 +20,7 @@ namespace staut
 			InitializeComponent();
 			numberofAPBClicks = 0;
 			pathTextBoxes = new TextBox[PROG_NUM];
+			pathTextBoxes[0] = pathTextBox1; //デフォルトであるパステキストボックスを格納
 		}
 
 		private void progRefeButton_Click(object sender, EventArgs e)
@@ -49,7 +50,7 @@ namespace staut
 			//パステキストボックスの作成上限数を超えた場合（プログラム追加上限数を超えた場合）
 			if (numberofAPBClicks >= PROG_NUM) 
 			{
-				MessageBox.Show("これ以上プログラムを追加できません。","エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("これ以上プログラムを追加できません。","追加不可", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
