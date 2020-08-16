@@ -100,6 +100,7 @@
 			this.decideButton.TabIndex = 8;
 			this.decideButton.Text = "決定";
 			this.decideButton.UseVisualStyleBackColor = true;
+			this.decideButton.Click += new System.EventHandler(this.decideButton_Click);
 			// 
 			// addProgButton
 			// 
@@ -138,6 +139,7 @@
 			// 
 			// addEditForm
 			// 
+			this.AcceptButton = this.decideButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);

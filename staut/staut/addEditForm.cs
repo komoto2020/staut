@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -31,13 +32,14 @@ namespace staut
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				int tag = Convert.ToInt32(button.Tag);
-				pathTextBoxes[tag - 1].Text = dialog.InitialDirectory;
+				pathTextBoxes[tag - 1].Text = dialog.FileName;
 			}
 			else
 			{
 				Console.WriteLine("canceled progRefButton Dialog");
 			}
 			dialog.Dispose();
+			return;
 		}
 
 
@@ -120,6 +122,7 @@ namespace staut
 			TextBox pathTextBox = createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
 			pathTextBoxes[numberofAPBClicks] = pathTextBox;
 			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE);
+			return;
 		}
 
 		private void createLabel(string name, string text, int[] locate)
@@ -129,6 +132,7 @@ namespace staut
 			label.Location = new Point(locate[0], locate[1]);
 			label.Text = text;
 			allProgPanel.Controls.Add(label);
+			return;
 		}
 
 		private TextBox createTextBox(string name, int[] locate, int[] size)
@@ -151,6 +155,44 @@ namespace staut
 			button.Size = new Size(size[0], size[1]);
 			button.Click += progRefeButton_Click;
 			allProgPanel.Controls.Add(button);
+			return;
+		}
+
+		//「決定」ボタン
+		//データベース
+		private void decideButton_Click(object sender, EventArgs e)
+		{
+			string DATADIR_PATH = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.Create) + "\\staut"; //本アプリが作成したデータを保存するディレクトリ
+			string DATAFILE_PATH = DATADIR_PATH + "\\data.csv"; //データを記載するファイルのパス
+			string ENCODE = "shift_jis";
+
+			Console.WriteLine("DATADIR_PATH = " + DATADIR_PATH);
+			Console.WriteLine("DATAFILE_PATH = " + DATAFILE_PATH);
+
+			Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+			Encoding enc = Encoding.GetEncoding(ENCODE);
+
+			Directory.CreateDirectory(DATADIR_PATH);
+			StreamWriter writer = new StreamWriter(DATAFILE_PATH, true, enc); //追記で書き込む
+
+			writer.WriteLine("#" + settitleTextBox.Text);
+			for(int i=0; i < PROG_NUM; i++)
+			{
+				try
+				{
+					writer.Write(pathTextBoxes[i].Text + ",");
+				}
+				catch(NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
+				{
+					break;
+				}
+				finally
+				{
+					writer.Write("\n");
+				}
+			}
+			writer.Close();
+			return;
 		}
 	}
 }
