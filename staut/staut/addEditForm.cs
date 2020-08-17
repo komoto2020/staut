@@ -162,37 +162,37 @@ namespace staut
 		//データベース
 		private void decideButton_Click(object sender, EventArgs e)
 		{
-			string DATADIR_PATH = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.Create) + "\\staut"; //本アプリが作成したデータを保存するディレクトリ
-			string DATAFILE_PATH = DATADIR_PATH + "\\data.csv"; //データを記載するファイルのパス
-			string ENCODE = "shift_jis";
+			//string DATADIR_PATH = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.Create) + "\\staut"; //本アプリが作成したデータを保存するディレクトリ
+			//string DATAFILE_PATH = DATADIR_PATH + "\\data.csv"; //データを記載するファイルのパス
+			//string ENCODE = "shift_jis";
 
-			Console.WriteLine("DATADIR_PATH = " + DATADIR_PATH);
-			Console.WriteLine("DATAFILE_PATH = " + DATAFILE_PATH);
+			//Console.WriteLine("DATADIR_PATH = " + DATADIR_PATH);
+			//Console.WriteLine("DATAFILE_PATH = " + DATAFILE_PATH);
 
-			Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-			Encoding enc = Encoding.GetEncoding(ENCODE);
+			//Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+			//Encoding enc = Encoding.GetEncoding(ENCODE);
 
-			Directory.CreateDirectory(DATADIR_PATH);
-			StreamWriter writer = new StreamWriter(DATAFILE_PATH, true, enc); //追記で書き込む
+			//Directory.CreateDirectory(DATADIR_PATH);
+			//StreamWriter writer = new StreamWriter(DATAFILE_PATH, true, enc); //追記で書き込む
 
-			writer.WriteLine("#" + settitleTextBox.Text);
-			for(int i=0; i < PROG_NUM; i++)
-			{
-				try
-				{
-					writer.Write(pathTextBoxes[i].Text + ",");
-				}
-				catch(NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
-				{
-					break;
-				}
-				finally
-				{
-					writer.Write("\n");
-				}
-			}
-			writer.Close();
-			return;
+			//writer.WriteLine("#" + settitleTextBox.Text);
+			//for(int i=0; i < PROG_NUM; i++)
+			//{
+			//	try
+			//	{
+			//		writer.Write(pathTextBoxes[i].Text + ",");
+			//	}
+			//	catch(NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
+			//	{
+			//		break;
+			//	}
+			//	finally
+			//	{
+			//		writer.Write("\n");
+			//	}
+			//}
+			//writer.Close();
+			//return;
 		}
 	}
 }

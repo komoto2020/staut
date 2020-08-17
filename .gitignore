@@ -351,3 +351,6 @@ MigrationBackup/
 /staut/staut.sln
 /staut/staut/staut.csproj
 memo.txt
+/staut/staut_ClassLibrary/staut_ClassLibrary.csproj
+/staut/staut_ClassLibrary/Migrations
+./.gitignore
