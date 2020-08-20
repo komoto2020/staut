@@ -17,7 +17,7 @@ namespace staut_ClassLibrary
 	{
 		public int SetTitleId { get; set; }
 		public string TitleName { get; set; }
-		public List<StartupProg> StartupProgs { get; set; }
+		public List<StartupProg> StartupProgs { get; } = new List<StartupProg>();
 	}
 
 	

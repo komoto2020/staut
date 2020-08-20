@@ -5,23 +5,29 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Serialization;
+using staut_ClassLibrary;
 
 namespace staut
 {
 	public partial class addEditForm : Form
 	{
 		private int numberofAPBClicks;  //「プログラムを追加」ボタンが押された回数
-		private TextBox[] pathTextBoxes; //パステキストボックスの集まり
+		private TextBox[] prognameTextBoxes; //プログラム名入力テキストボックスの集まり
+		private TextBox[] pathTextBoxes; //パス入力テキストボックスの集まり
 		private const int PROG_NUM = 10; //同時に起動できるファイルの数
 
 		public addEditForm()
 		{
 			InitializeComponent();
 			numberofAPBClicks = 0;
+			prognameTextBoxes = new TextBox[PROG_NUM];
+			prognameTextBoxes[0] = prognameTextBox1; //デフォルトであるプログラム名入力テキストボックスを格納
 			pathTextBoxes = new TextBox[PROG_NUM];
-			pathTextBoxes[0] = pathTextBox1; //デフォルトであるパステキストボックスを格納
+			pathTextBoxes[0] = pathTextBox1; //デフォルトであるパス入力テキストボックスを格納
 		}
 
 		private void progRefeButton_Click(object sender, EventArgs e)
@@ -118,7 +124,8 @@ namespace staut
 
 			createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE);
 			createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE);
-			createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE);
+			TextBox prognameTextBox = createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE);
+			prognameTextBoxes[numberofAPBClicks] = prognameTextBox;
 			TextBox pathTextBox = createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
 			pathTextBoxes[numberofAPBClicks] = pathTextBox;
 			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE);
@@ -162,37 +169,56 @@ namespace staut
 		//データベース
 		private void decideButton_Click(object sender, EventArgs e)
 		{
-			//string DATADIR_PATH = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile, Environment.SpecialFolderOption.Create) + "\\staut"; //本アプリが作成したデータを保存するディレクトリ
-			//string DATAFILE_PATH = DATADIR_PATH + "\\data.csv"; //データを記載するファイルのパス
-			//string ENCODE = "shift_jis";
+			using(var db = new SetTitleDbContext())
+			{
+				db.Add(new SetTitle { TitleName = settitleTextBox.Text });
+				db.SaveChanges();
 
-			//Console.WriteLine("DATADIR_PATH = " + DATADIR_PATH);
-			//Console.WriteLine("DATAFILE_PATH = " + DATAFILE_PATH);
+				var set = db.SetTitles
+					.OrderBy(s => s.SetTitleId)
+					.Last();
+				for (int i = 0; i < PROG_NUM; i++)
+				{
+					try
+					{
+						set.StartupProgs.Add(new StartupProg
+						{
+							StartupProgName = prognameTextBoxes[i].Text,
+							StartupProgPath = pathTextBoxes[i].Text,
+							SetTilteId = set.SetTitleId,
+							SetTitle = set
+						});
+						db.SaveChanges();
+					}
+					catch (NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
+					{
+						db.SaveChanges();
+						break;
+					}
+				}
+				ShowTables(db);
+				return; 
+			}
+		}
 
-			//Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-			//Encoding enc = Encoding.GetEncoding(ENCODE);
-
-			//Directory.CreateDirectory(DATADIR_PATH);
-			//StreamWriter writer = new StreamWriter(DATAFILE_PATH, true, enc); //追記で書き込む
-
-			//writer.WriteLine("#" + settitleTextBox.Text);
-			//for(int i=0; i < PROG_NUM; i++)
-			//{
-			//	try
-			//	{
-			//		writer.Write(pathTextBoxes[i].Text + ",");
-			//	}
-			//	catch(NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
-			//	{
-			//		break;
-			//	}
-			//	finally
-			//	{
-			//		writer.Write("\n");
-			//	}
-			//}
-			//writer.Close();
-			//return;
+		private void ShowTables(SetTitleDbContext db)
+		{
+			var queryAllSetTiles = from setTitle in db.SetTitles
+									select setTitle;
+			foreach(var data in queryAllSetTiles)
+			{
+				Console.WriteLine("SetTitleId = " + data.SetTitleId);
+				Console.WriteLine("SetTitleName = " + data.TitleName);
+				foreach (var item in data.StartupProgs)
+				{
+					Console.WriteLine("\tStartupProgId = " + item.StartupProgId);
+					Console.WriteLine("\tStartupProgName = " + item.StartupProgName);
+					Console.WriteLine("\tStartupProgPath = " + item.StartupProgPath);
+					Console.WriteLine("\tSetTilteId = " + item.SetTilteId);
+					Console.WriteLine("\tSetTitle = " + item.SetTitle.TitleName);
+				}
+				Console.WriteLine();
+			}
 		}
 	}
 }
