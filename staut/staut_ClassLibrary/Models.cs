@@ -26,7 +26,7 @@ namespace staut_ClassLibrary
 		public int StartupProgId { get; set; }
 		public string StartupProgName { get; set; }
 		public string StartupProgPath { get; set; } 
-		public int SetTilteId { get; set; }
+		public int SetTitleId { get; set; }
 		public SetTitle SetTitle { get; set; }
 	}
 }

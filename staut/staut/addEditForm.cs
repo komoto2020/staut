@@ -185,7 +185,7 @@ namespace staut
 						{
 							StartupProgName = prognameTextBoxes[i].Text,
 							StartupProgPath = pathTextBoxes[i].Text,
-							SetTilteId = set.SetTitleId,
+							SetTitleId = set.SetTitleId,
 							SetTitle = set
 						});
 						db.SaveChanges();
@@ -205,20 +205,26 @@ namespace staut
 		{
 			var queryAllSetTiles = from setTitle in db.SetTitles
 									select setTitle;
-			foreach(var data in queryAllSetTiles)
+			var queryAllStartupProg = from startupProg in db.StartupProgs
+								   select startupProg;
+
+			foreach (var data in queryAllSetTiles)
 			{
 				Console.WriteLine("SetTitleId = " + data.SetTitleId);
 				Console.WriteLine("SetTitleName = " + data.TitleName);
-				foreach (var item in data.StartupProgs)
-				{
-					Console.WriteLine("\tStartupProgId = " + item.StartupProgId);
-					Console.WriteLine("\tStartupProgName = " + item.StartupProgName);
-					Console.WriteLine("\tStartupProgPath = " + item.StartupProgPath);
-					Console.WriteLine("\tSetTilteId = " + item.SetTilteId);
-					Console.WriteLine("\tSetTitle = " + item.SetTitle.TitleName);
-				}
-				Console.WriteLine();
+				Console.WriteLine("SetTitle_StartupProg_Count = " + data.StartupProgs.Count);
 			}
+			Console.WriteLine();
+
+			foreach (var data in queryAllStartupProg)
+			{
+				Console.WriteLine("StartupProgId = " + data.StartupProgId);
+				Console.WriteLine("StartupProgName = " + data.StartupProgName);
+				Console.WriteLine("StartupProgPath = " + data.StartupProgPath);
+				Console.WriteLine("StartupProg_SetTitleId = " + data.SetTitleId);
+				Console.WriteLine("StartupProg_SetTitle = " + data.SetTitle.SetTitleId);
+			}
+			Console.WriteLine();
 		}
 	}
 }
