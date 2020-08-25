@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+
 using staut_ClassLibrary;
 
 namespace staut
@@ -122,46 +123,14 @@ namespace staut
 				progRefeButton1.Size.Height
 			};
 
-			createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE);
-			createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE);
-			TextBox prognameTextBox = createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE);
+			CreateTools.createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE, allProgPanel);
+			CreateTools.createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE, allProgPanel);
+			TextBox prognameTextBox = CreateTools.createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE, allProgPanel);
 			prognameTextBoxes[numberofAPBClicks] = prognameTextBox;
-			TextBox pathTextBox = createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE);
+			TextBox pathTextBox = CreateTools.createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE, allProgPanel);
 			pathTextBoxes[numberofAPBClicks] = pathTextBox;
-			createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE);
-			return;
-		}
-
-		private void createLabel(string name, string text, int[] locate)
-		{
-			Label label = new Label();
-			label.Name = name;
-			label.Location = new Point(locate[0], locate[1]);
-			label.Text = text;
-			allProgPanel.Controls.Add(label);
-			return;
-		}
-
-		private TextBox createTextBox(string name, int[] locate, int[] size)
-		{
-			TextBox textBox = new TextBox();
-			textBox.Name = name;
-			textBox.Location = new Point(locate[0], locate[1]);
-			textBox.Size = new Size(size[0], size[1]);
-			allProgPanel.Controls.Add(textBox);
-			return textBox;
-		}
-
-		private void createButton(string name, string text, int tag, int[] locate, int[] size)
-		{
-			Button button = new Button();
-			button.Name = name;
-			button.Text = text;
-			button.Tag = tag;
-			button.Location = new Point(locate[0], locate[1]);
-			button.Size = new Size(size[0], size[1]);
+			Button button = CreateTools.createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE, allProgPanel);
 			button.Click += progRefeButton_Click;
-			allProgPanel.Controls.Add(button);
 			return;
 		}
 

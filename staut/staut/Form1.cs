@@ -1,4 +1,6 @@
-﻿using System;
+﻿//databaseからデータを引っ張ってフォーム上に表示する
+using staut_ClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,12 +18,13 @@ namespace staut
 
 		public InitForm()
 		{
+			Console.WriteLine("Form1: InitForm");
 			InitializeComponent();
 		}
 
 		private void Form1_Load(object sender, EventArgs e) //InitForm起動時
 		{
-
+			Console.WriteLine("Form1: Loaded");
 		}
 
 		//メニューバーの項目がクリックされた場合
@@ -44,7 +47,6 @@ namespace staut
 				case DELETE:
 					break;
 			}
-
 		}
 	}
 }
