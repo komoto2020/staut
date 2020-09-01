@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace staut
 {
@@ -16,6 +17,16 @@ namespace staut
 			label.Text = text;
 			container.Controls.Add(label);
 			return label;
+		}
+
+		public static LinkLabel createLinkLabel(string name, string text, int[] locate, ScrollableControl container)
+		{
+			LinkLabel linkLabel = new LinkLabel();
+			linkLabel.Name = name;
+			linkLabel.Location = new Point(locate[0], locate[1]);
+			linkLabel.Text = text;
+			container.Controls.Add(linkLabel);
+			return linkLabel;
 		}
 
 		public static TextBox createTextBox(string name, int[] locate, int[] size, ScrollableControl container)

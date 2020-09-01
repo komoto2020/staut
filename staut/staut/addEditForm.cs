@@ -31,6 +31,21 @@ namespace staut
 			pathTextBoxes[0] = pathTextBox1; //デフォルトであるパス入力テキストボックスを格納
 		}
 
+		public addEditForm (IQueryable<SetTitle> setTitle_data, IQueryable<StartupProg> startupProgs)
+		{
+			InitializeComponent();
+			Console.WriteLine($"setTitle_data = {setTitle_data.Count()}");
+			Console.WriteLine($"startupProgs_data = {startupProgs.Count()}");
+			foreach(var setTitle in setTitle_data)
+			{
+
+			}
+			foreach(var startupProg in startupProgs)
+			{
+
+			}
+		}
+
 		private void progRefeButton_Click(object sender, EventArgs e)
 		{
 			Button button = sender as Button;

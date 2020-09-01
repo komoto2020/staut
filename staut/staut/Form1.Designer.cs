@@ -71,6 +71,7 @@
 			// 
 			// panel1
 			// 
+			this.panel1.AutoScroll = true;
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 34);
 			this.panel1.Name = "panel1";
