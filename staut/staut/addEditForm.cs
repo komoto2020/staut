@@ -16,33 +16,33 @@ namespace staut
 {
 	public partial class addEditForm : Form
 	{
-		private int numberofAPBClicks;  //「プログラムを追加」ボタンが押された回数
-		private TextBox[] prognameTextBoxes; //プログラム名入力テキストボックスの集まり
-		private TextBox[] pathTextBoxes; //パス入力テキストボックスの集まり
+		private int numberofProgram = 0;  //当該セットに追加されている起動プログラム数
 		private const int PROG_NUM = 10; //同時に起動できるファイルの数
+		private TextBox[] prognameTextBoxes = new TextBox[PROG_NUM]; //プログラム名入力テキストボックスの集まり
+		private TextBox[] pathTextBoxes = new TextBox[PROG_NUM]; //パス入力テキストボックスの集まり
 
-		public addEditForm()
+		//セットを新規作成する場合のインスタンス処理
+		public addEditForm() 
 		{
 			InitializeComponent();
-			numberofAPBClicks = 0;
-			prognameTextBoxes = new TextBox[PROG_NUM];
-			prognameTextBoxes[0] = prognameTextBox1; //デフォルトであるプログラム名入力テキストボックスを格納
-			pathTextBoxes = new TextBox[PROG_NUM];
-			pathTextBoxes[0] = pathTextBox1; //デフォルトであるパス入力テキストボックスを格納
+			CreateComponentCluster();
 		}
 
-		public addEditForm (IQueryable<SetTitle> setTitle_data, IQueryable<StartupProg> startupProgs)
+		//既存セットを編集するときのインスタンス処理
+		public addEditForm (IQueryable<SetTitle> setTitles, IQueryable<StartupProg> startupProgs) 
 		{
 			InitializeComponent();
-			Console.WriteLine($"setTitle_data = {setTitle_data.Count()}");
+			Console.WriteLine($"setTitle_data = {setTitles.Count()}");
 			Console.WriteLine($"startupProgs_data = {startupProgs.Count()}");
-			foreach(var setTitle in setTitle_data)
+			foreach(var setTitle in setTitles)
 			{
-
+				settitleTextBox.Text = setTitle.TitleName;
 			}
 			foreach(var startupProg in startupProgs)
 			{
-
+				string program_name = startupProg.StartupProgName;
+				string program_path = startupProg.StartupProgPath;
+				CreateComponentCluster(program_name, program_path);
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace staut
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				int tag = Convert.ToInt32(button.Tag);
-				pathTextBoxes[tag - 1].Text = dialog.FileName;
+				pathTextBoxes[tag].Text = dialog.FileName;
 			}
 			else
 			{
@@ -69,83 +69,13 @@ namespace staut
 		private void addProgButton_Click(object sender, EventArgs e)
 		{
 			Console.WriteLine("Clicked addProgramButton in addEditForm");
-			numberofAPBClicks++; //クリック回数のカウント
-
 			//パステキストボックスの作成上限数を超えた場合（プログラム追加上限数を超えた場合）
-			if (numberofAPBClicks >= PROG_NUM) 
+			if (numberofProgram >= PROG_NUM) 
 			{
 				MessageBox.Show("これ以上プログラムを追加できません。","追加不可", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-
-
-			//prognameLabel
-			string PNLABEL_NAME = $"prognameLabel{numberofAPBClicks+1}";
-			string PNLABEL_TEXT = $"{numberofAPBClicks+1}. プログラム名";
-			const int PNLABEL_OFFSET = 100;
-			int[] PNLABEL_LOCATE = {
-				prognameLabel1.Location.X, //X座標
-				PNLABEL_OFFSET * numberofAPBClicks + allProgPanel.AutoScrollPosition.Y //Y座標
-			};
-
-			//pathLabel
-			string PATHLABEL_NAME = $"pathLabel{numberofAPBClicks+1}";
-			const string PATHLABEL_TEXT = "パス";
-			const int PATHLABEL_OFFSET = 100;
-			int[] PATHLABEL_LOCATE = {
-				pathLabel1.Location.X, //X座標
-				PATHLABEL_OFFSET * numberofAPBClicks + allProgPanel.AutoScrollPosition.Y //Y座標
-			};
-
-			//prognameTextBox
-			string PNBOX_NAME = $"prognameTextBox{numberofAPBClicks+1}";
-			const int PNBOX_OFFSET = 100; //テキストボックス間の距離（Y）
-			const int PNBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
-			int[] PNBOX_LOCATE = { 
-				prognameTextBox1.Location.X, //X座標
-				PNBOX_OFFSET * numberofAPBClicks + PNBOX_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y //Y座標
-			};
-			int[] PNBOX_SIZE = {
-				prognameTextBox1.Size.Width, //テキストボックス幅
-				prognameTextBox1.Size.Height //テキストボックス高さ
-			};
-
-			//pathTextBox
-			string PATHBOX_NAME = $"pathTextBox{numberofAPBClicks+1}";
-			const int PATHBOX_OFFSET = 100;
-			const int PATHBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
-			int[] PATHBOX_LOCATE = {
-				pathTextBox1.Location.X, //X座標
-				PATHBOX_OFFSET * numberofAPBClicks + PATHBOX_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y //Y座標
-			};
-			int[] PATHBOX_SIZE = {
-				pathTextBox1.Size.Width, //テキストボックス幅
-				pathTextBox1.Size.Height //テキストボックス高さ
-			};
-
-			//progRefeButton
-			string PRBUTTON_NAME = $"progRefeButton{numberofAPBClicks+1}";
-			const string PRBUTTON_TEXT = "参照";
-			int PRBUTTON_TAG = numberofAPBClicks + 1;
-			const int PRBUTTON_OFFSET = 100;
-			const int PRBUTTON_FIRST_OFFSET = 28;
-			int[] PRBUTTON_LOCATE ={
-				progRefeButton1.Location.X,
-				PRBUTTON_OFFSET * numberofAPBClicks + PRBUTTON_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y
-			};
-			int[] PRBUTTON_SIZE ={
-				progRefeButton1.Size.Width,
-				progRefeButton1.Size.Height
-			};
-
-			CreateTools.createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE, allProgPanel);
-			CreateTools.createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE, allProgPanel);
-			TextBox prognameTextBox = CreateTools.createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE, allProgPanel);
-			prognameTextBoxes[numberofAPBClicks] = prognameTextBox;
-			TextBox pathTextBox = CreateTools.createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE, allProgPanel);
-			pathTextBoxes[numberofAPBClicks] = pathTextBox;
-			Button button = CreateTools.createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE, allProgPanel);
-			button.Click += progRefeButton_Click;
+			CreateComponentCluster();
 			return;
 		}
 
@@ -185,6 +115,81 @@ namespace staut
 			}
 		}
 
+		private void CreateComponentCluster(string program_name="", string program_path="")
+		{
+			//prognameLabel
+			string PNLABEL_NAME = $"prognameLabel{numberofProgram}";
+			string PNLABEL_TEXT = $"{numberofProgram + 1}. プログラム名";
+			const int PNLABEL_OFFSET = 100;
+			int[] PNLABEL_LOCATE = {
+				204, //X座標
+				PNLABEL_OFFSET * numberofProgram + allProgPanel.AutoScrollPosition.Y //Y座標
+			};
+
+			//pathLabel
+			string PATHLABEL_NAME = $"pathLabel{numberofProgram}";
+			const string PATHLABEL_TEXT = "パス";
+			const int PATHLABEL_OFFSET = 100;
+			int[] PATHLABEL_LOCATE = {
+				423, //X座標
+				PATHLABEL_OFFSET * numberofProgram + allProgPanel.AutoScrollPosition.Y //Y座標
+			};
+
+			//prognameTextBox
+			string PNBOX_NAME = $"prognameTextBox{numberofProgram}";
+			const int PNBOX_OFFSET = 100; //テキストボックス間の距離（Y）
+			const int PNBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
+			int[] PNBOX_LOCATE = {
+				204, //X座標
+				PNBOX_OFFSET * numberofProgram + PNBOX_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y //Y座標
+			};
+			int[] PNBOX_SIZE = {
+				150, //テキストボックス幅
+				31 //テキストボックス高さ
+			};
+
+			//pathTextBox
+			string PATHBOX_NAME = $"pathTextBox{numberofProgram}";
+			const int PATHBOX_OFFSET = 100;
+			const int PATHBOX_FIRST_OFFSET = 28; //Panelと最上部のテキストボックスとの距離（Y）
+			int[] PATHBOX_LOCATE = {
+				423, //X座標
+				PATHBOX_OFFSET * numberofProgram + PATHBOX_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y //Y座標
+			};
+			int[] PATHBOX_SIZE = {
+				150, //テキストボックス幅
+				31 //テキストボックス高さ
+			};
+
+			//progRefeButton
+			string PRBUTTON_NAME = $"progRefeButton{numberofProgram}";
+			const string PRBUTTON_TEXT = "参照";
+			int PRBUTTON_TAG = numberofProgram;
+			const int PRBUTTON_OFFSET = 100;
+			const int PRBUTTON_FIRST_OFFSET = 28;
+			int[] PRBUTTON_LOCATE ={
+				579,
+				PRBUTTON_OFFSET * numberofProgram + PRBUTTON_FIRST_OFFSET + allProgPanel.AutoScrollPosition.Y
+			};
+			int[] PRBUTTON_SIZE ={
+				74,
+				31
+			};
+
+			CreateTools.createLabel(PNLABEL_NAME, PNLABEL_TEXT, PNLABEL_LOCATE, allProgPanel);
+			CreateTools.createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE, allProgPanel);
+			TextBox prognameTextBox = CreateTools.createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE, allProgPanel);
+			prognameTextBox.Text = program_name;
+			prognameTextBoxes[numberofProgram] = prognameTextBox;
+			TextBox pathTextBox = CreateTools.createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE, allProgPanel);
+			pathTextBox.Text = program_path;
+			pathTextBoxes[numberofProgram] = pathTextBox;
+			Button button = CreateTools.createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE, allProgPanel);
+			button.Click += progRefeButton_Click;
+
+			numberofProgram++;
+			return;
+		}
 		private void ShowTables(SetTitleDbContext db)
 		{
 			var queryAllSetTiles = from setTitle in db.SetTitles
