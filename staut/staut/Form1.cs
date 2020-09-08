@@ -91,9 +91,11 @@ namespace staut
 
 				var setTitle_data = from setTitle in db.SetTitles
 						   where setTitle.SetTitleId == setTitleId
+						   orderby setTitle.SetTitleId
 						   select setTitle;
 				var startupProg_data = from startupProg in db.StartupProgs
 									   where startupProg.SetTitleId == setTitleId
+									   orderby startupProg.StartupProgId
 									   select startupProg;
 				addEditForm addEditForm = new addEditForm(setTitle_data, startupProg_data);
 				addEditForm.ShowDialog();

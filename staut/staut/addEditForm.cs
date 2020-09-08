@@ -1,4 +1,5 @@
-﻿using System;
+﻿//決定ボタンの新規追加機能を関数化し、編集機能を「削除→新規追加」で書き換える
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,26 +17,31 @@ namespace staut
 {
 	public partial class addEditForm : Form
 	{
+		private int setTitleId = 0; //新規作成または編集している当該セットのID、新規作成の場合は0
 		private int numberofProgram = 0;  //当該セットに追加されている起動プログラム数
 		private const int PROG_NUM = 10; //同時に起動できるファイルの数
 		private TextBox[] prognameTextBoxes = new TextBox[PROG_NUM]; //プログラム名入力テキストボックスの集まり
 		private TextBox[] pathTextBoxes = new TextBox[PROG_NUM]; //パス入力テキストボックスの集まり
+		private bool isAdd = true;
 
 		//セットを新規作成する場合のインスタンス処理
 		public addEditForm() 
 		{
 			InitializeComponent();
 			CreateComponentCluster();
+			isAdd = true;
+			setTitleId = 0;
 		}
 
 		//既存セットを編集するときのインスタンス処理
 		public addEditForm (IQueryable<SetTitle> setTitles, IQueryable<StartupProg> startupProgs) 
 		{
 			InitializeComponent();
-			Console.WriteLine($"setTitle_data = {setTitles.Count()}");
-			Console.WriteLine($"startupProgs_data = {startupProgs.Count()}");
-			foreach(var setTitle in setTitles)
+			Console.WriteLine($"setTitle_numData = {setTitles.Count()}");
+			Console.WriteLine($"startupProgs_numData = {startupProgs.Count()}");
+			foreach(var setTitle in setTitles) //setTitlesの中身は１つのみ
 			{
+				setTitleId = setTitle.SetTitleId;
 				settitleTextBox.Text = setTitle.TitleName;
 			}
 			foreach(var startupProg in startupProgs)
@@ -44,6 +50,7 @@ namespace staut
 				string program_path = startupProg.StartupProgPath;
 				CreateComponentCluster(program_name, program_path);
 			}
+			isAdd = false;
 		}
 
 		private void progRefeButton_Click(object sender, EventArgs e)
@@ -83,35 +90,30 @@ namespace staut
 		//データベース
 		private void decideButton_Click(object sender, EventArgs e)
 		{
-			using(var db = new SetTitleDbContext())
+			if (isAdd)
 			{
-				db.Add(new SetTitle { TitleName = settitleTextBox.Text });
-				db.SaveChanges();
-
-				var set = db.SetTitles
-					.OrderBy(s => s.SetTitleId)
-					.Last();
-				for (int i = 0; i < PROG_NUM; i++)
+				Console.WriteLine("Add Data");
+				using (var db = new SetTitleDbContext())
 				{
-					try
-					{
-						set.StartupProgs.Add(new StartupProg
-						{
-							StartupProgName = prognameTextBoxes[i].Text,
-							StartupProgPath = pathTextBoxes[i].Text,
-							SetTitleId = set.SetTitleId,
-							SetTitle = set
-						});
-						db.SaveChanges();
-					}
-					catch (NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
-					{
-						db.SaveChanges();
-						break;
-					}
+					DbAdd(db);
+					ShowTables(db);
+					return;
 				}
-				ShowTables(db);
-				return; 
+			}
+			else
+			{
+				Console.WriteLine("Edit Data");
+				using (var db = new SetTitleDbContext())
+				{
+					var datas_setTitle = from setTitle in db.SetTitles
+										 where setTitle.SetTitleId == setTitleId
+										 select setTitle;
+					var data_setTitle = datas_setTitle.First();
+					db.Remove(data_setTitle);
+					db.SaveChanges();
+					DbAdd(db, false);
+				}
+
 			}
 		}
 
@@ -189,6 +191,54 @@ namespace staut
 
 			numberofProgram++;
 			return;
+		}
+
+		private void DbAdd(SetTitleDbContext db, bool isAdd=true)
+		{
+			if (isAdd)
+			{
+				db.Add(new SetTitle { TitleName = settitleTextBox.Text });
+			}
+			else
+			{
+				db.Add(new SetTitle { SetTitleId = setTitleId, TitleName = settitleTextBox.Text });
+			}
+			db.SaveChanges();
+
+			SetTitle set;
+			if (isAdd)
+			{
+				set = db.SetTitles
+						  .OrderBy(s => s.SetTitleId)
+	                      .Last();
+			}
+			else
+			{
+				var sets = from setTitle in db.SetTitles
+					  where setTitle.SetTitleId == setTitleId
+					  select setTitle;
+				set = sets.First();
+			}
+			for (int i = 0; i < PROG_NUM; i++)
+			{
+				try
+				{
+					set.StartupProgs.Add(new StartupProg
+					{
+						StartupProgName = prognameTextBoxes[i].Text,
+						StartupProgPath = pathTextBoxes[i].Text,
+						SetTitleId = set.SetTitleId,
+						SetTitle = set
+					});
+					db.SaveChanges();
+				}
+				catch (NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
+				{
+					db.SaveChanges();
+					break;
+				}
+			}
+
 		}
 		private void ShowTables(SetTitleDbContext db)
 		{
