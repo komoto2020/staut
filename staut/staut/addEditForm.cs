@@ -1,4 +1,4 @@
-﻿//決定ボタンの新規追加機能を関数化し、編集機能を「削除→新規追加」で書き換える
+﻿//決定ボタン押下後に、Form1をロードしなおす
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

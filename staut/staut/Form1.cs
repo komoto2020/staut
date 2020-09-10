@@ -1,5 +1,4 @@
-﻿//databaseからデータを引っ張ってフォーム上に表示する
-using staut_ClassLibrary;
+﻿using staut_ClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +21,7 @@ namespace staut
 			InitializeComponent();
 		}
 
-		private void Form1_Load(object sender, EventArgs e) //InitForm起動時
+		private void Form1_Load(object sender, EventArgs e) //InitForm起動時、1回のみ呼び出される
 		{
 			Console.WriteLine("Form1: Loaded");
 			using (var db = new SetTitleDbContext())
@@ -98,8 +97,16 @@ namespace staut
 									   orderby startupProg.StartupProgId
 									   select startupProg;
 				addEditForm addEditForm = new addEditForm(setTitle_data, startupProg_data);
-				addEditForm.ShowDialog();
+				DialogResult dialogResult = addEditForm.ShowDialog();
+				if (dialogResult == DialogResult.OK)
+				{
+					InitForm newform = new InitForm();
+					newform.Show();
+					//Form1_Load(null, EventArgs.Empty);
+				}
+
 			}
+
 		}
 
 		//メニューバーの項目がクリックされた場合
@@ -115,7 +122,11 @@ namespace staut
 				case ADD:
 					Console.WriteLine("Clicked addButton in InitForm.");
 					addEditForm addeditform = new addEditForm();
-					addeditform.ShowDialog();
+					if (addeditform.ShowDialog() == DialogResult.OK)
+					{
+						InitForm newform = new InitForm();
+						newform.Show();
+					}
 					break;
 
 				//一括削除ボタン
