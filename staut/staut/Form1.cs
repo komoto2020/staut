@@ -1,4 +1,5 @@
-﻿using staut_ClassLibrary;
+﻿//一括削除
+using staut_ClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -50,7 +50,38 @@ namespace staut
 				string program_path = startupProg.StartupProgPath;
 				CreateComponentCluster(program_name, program_path);
 			}
+
+			//削除ボタン作成
+			string DELETEBUTTON_NAME = $"deleteButton";
+			const string DELETEBUTTON_TEXT = "削除";
+			int DELETEBUTTON_TAG = -1;
+			int[] DELETEBUTTON_LOCATE ={
+				31,
+				404
+			};
+			int[] DELETEBUTTON_SIZE ={
+				112,
+				34
+			};
+
+			//削除ボタン作成
+			Button deleteButton = CreateTools.createButton(DELETEBUTTON_NAME, DELETEBUTTON_TEXT, DELETEBUTTON_TAG, DELETEBUTTON_LOCATE, DELETEBUTTON_SIZE, this);
+			deleteButton.Click += deleteButton_Click;
+			deleteButton.DialogResult = DialogResult.OK;
 			isAdd = false;
+		}
+
+		private void deleteButton_Click(object sender, EventArgs e)
+		{
+			using(var db = new SetTitleDbContext())
+			{
+				var datas = from setTitle in db.SetTitles
+							where setTitle.SetTitleId == setTitleId
+							select setTitle;
+				var data = datas.First();
+				db.Remove(data);
+				db.SaveChanges();
+			}
 		}
 
 		private void progRefeButton_Click(object sender, EventArgs e)
