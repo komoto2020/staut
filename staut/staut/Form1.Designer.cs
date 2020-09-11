@@ -66,7 +66,7 @@
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
 			this.toolStripButton2.Size = new System.Drawing.Size(88, 29);
-			this.toolStripButton2.Tag = "delete";
+			this.toolStripButton2.Tag = "bulkdelete";
 			this.toolStripButton2.Text = "一括削除";
 			// 
 			// panel1

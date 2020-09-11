@@ -1,5 +1,4 @@
-﻿//決定ボタン押下後に、Form1をロードしなおす
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -68,6 +67,7 @@ namespace staut
 			Button deleteButton = CreateTools.createButton(DELETEBUTTON_NAME, DELETEBUTTON_TEXT, DELETEBUTTON_TAG, DELETEBUTTON_LOCATE, DELETEBUTTON_SIZE, this);
 			deleteButton.Click += deleteButton_Click;
 			deleteButton.DialogResult = DialogResult.OK;
+
 			isAdd = false;
 		}
 

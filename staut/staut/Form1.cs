@@ -1,5 +1,4 @@
-﻿//一括削除
-using staut_ClassLibrary;
+﻿using staut_ClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -114,7 +113,7 @@ namespace staut
 		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
 			const string ADD = "add";
-			const string DELETE = "delete";
+			const string BULKDELETE = "bulkdelete";
 
 			var item = e.ClickedItem as ToolStripButton;
 			switch (item.Tag)
@@ -131,7 +130,23 @@ namespace staut
 					break;
 
 				//一括削除ボタン
-				case DELETE:
+				case BULKDELETE:
+					DialogResult result = MessageBox.Show("すべて削除しますか？", "一括削除", MessageBoxButtons.YesNo);
+					if(result != DialogResult.Yes)
+					{
+						break;
+					}
+					using (var db = new SetTitleDbContext())
+					{
+						Console.WriteLine("all delete");
+						var datas = from setTitle in db.SetTitles
+									select setTitle;
+						foreach(var data in datas)
+						{
+							db.Remove(data);
+						}
+						db.SaveChanges();
+					}
 					break;
 			}
 		}
