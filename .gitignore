@@ -353,6 +353,5 @@ MigrationBackup/
 memo.txt
 /staut/staut_ClassLibrary/staut_ClassLibrary.csproj
 /staut/staut_ClassLibrary/Migrations
-./.gitignore
-./欠陥メモ.txt
+/.gitignore
 /欠陥メモ.txt

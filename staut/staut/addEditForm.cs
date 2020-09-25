@@ -149,7 +149,6 @@ namespace staut
 				{
 					DbAdd(db);
 					ShowTables(db);
-					return;
 				}
 			}
 			else
@@ -165,9 +164,40 @@ namespace staut
 					db.SaveChanges();
 					DbAdd(db, false);
 				}
-
 			}
+			return;
 		}
+
+		//セットタイトル名の入力チェック
+		private void settitleTextBox_Validating(object sender, CancelEventArgs e)
+		{
+			TextBox textBox = sender as TextBox;
+			//空欄の場合
+			if (textBox.Text.Trim().Length == 0) 
+			{
+				textBox.BackColor = Color.Red;
+				isValid = false;
+			}
+			else
+			{
+				textBox.BackColor = Color.White;
+				isValid = true;
+			}
+			return;
+		}
+
+		private void prognameTextBox_Validating(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void pathTextBox_Validating(object sender, CancelEventArgs e)
+		{
+
+		}
+
+
+
 
 		private void CreateComponentCluster(string program_name="", string program_path="")
 		{
@@ -247,11 +277,6 @@ namespace staut
 			return;
 		}
 
-		private void PrognameTextBox_Validating(object sender, CancelEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
 		private void DbAdd(SetTitleDbContext db, bool isAdd=true)
 		{
 			if (isAdd)
@@ -290,15 +315,36 @@ namespace staut
 						SetTitle = set
 					});
 					db.SaveChanges();
+
 				}
 				catch (NullReferenceException ne) //起動できる上限数より少ないファイルを設定した場合
 				{
 					db.SaveChanges();
 					break;
 				}
+				finally
+				{
+					DbOrganize(db);
+				}
 			}
 
 		}
+
+		//データベース内のデータを整理する（空白のみのデータを削除）
+		private void DbOrganize(SetTitleDbContext db)
+		{
+			var datas = from startupProg in db.StartupProgs
+						select startupProg;
+			foreach(var data in datas)
+			{
+				if(data.StartupProgName.Trim().Length == 0||data.StartupProgPath.Trim().Length == 0)
+				{
+					db.Remove(data);
+					db.SaveChanges();
+				}
+			}
+		}
+
 		private void ShowTables(SetTitleDbContext db)
 		{
 			var queryAllSetTiles = from setTitle in db.SetTitles
@@ -323,33 +369,6 @@ namespace staut
 				Console.WriteLine("StartupProg_SetTitle = " + data.SetTitle.SetTitleId);
 			}
 			Console.WriteLine();
-		}
-
-		//セットタイトル名の入力チェック
-		private void settitleTextBox_Validating(object sender, CancelEventArgs e)
-		{
-			TextBox textBox = sender as TextBox;
-			if (textBox.Text.Trim().Length == 0)
-			{
-				textBox.BackColor = Color.Red;
-				isValid = false;
-			}
-			else
-			{
-				textBox.BackColor = Color.White;
-				isValid = true;
-			}
-			return;
-		}
-
-		private void prognameTextBox_Validating(object sender, CancelEventArgs e)
-		{
-
-		}
-
-		private void pathTextBox_Validating(object sender, CancelEventArgs e)
-		{
-
 		}
 
 	}
