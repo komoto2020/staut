@@ -50,6 +50,7 @@
 			this.settitleTextBox.Name = "settitleTextBox";
 			this.settitleTextBox.Size = new System.Drawing.Size(150, 31);
 			this.settitleTextBox.TabIndex = 1;
+			this.settitleTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.settitleTextBox_Validating);
 			// 
 			// decideButton
 			// 
@@ -94,6 +95,7 @@
 			this.Controls.Add(this.settileLabel);
 			this.Name = "addEditForm";
 			this.Text = "addEditForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.addEditForm_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

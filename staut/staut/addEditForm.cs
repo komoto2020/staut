@@ -1,4 +1,6 @@
-﻿using System;
+﻿//入力データのバリデーションチェック
+//バリデーションエラー時、決定ボタンの無効化
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -22,6 +25,7 @@ namespace staut
 		private TextBox[] prognameTextBoxes = new TextBox[PROG_NUM]; //プログラム名入力テキストボックスの集まり
 		private TextBox[] pathTextBoxes = new TextBox[PROG_NUM]; //パス入力テキストボックスの集まり
 		private bool isAdd = true;
+		private bool isValid = true; //すべての入力データに対しバリデーションチェック通過済みか
 
 		//セットを新規作成する場合のインスタンス処理
 		public addEditForm() 
@@ -29,6 +33,7 @@ namespace staut
 			InitializeComponent();
 			CreateComponentCluster();
 			isAdd = true;
+			isValid = true;
 			setTitleId = 0;
 		}
 
@@ -69,6 +74,15 @@ namespace staut
 			deleteButton.DialogResult = DialogResult.OK;
 
 			isAdd = false;
+			isValid = true;
+		}
+
+		private void addEditForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!isValid)
+			{
+				e.Cancel = true;
+			}
 		}
 
 		private void deleteButton_Click(object sender, EventArgs e)
@@ -84,6 +98,7 @@ namespace staut
 			}
 		}
 
+		//「参照ボタン」
 		private void progRefeButton_Click(object sender, EventArgs e)
 		{
 			Button button = sender as Button;
@@ -121,6 +136,12 @@ namespace staut
 		//データベース
 		private void decideButton_Click(object sender, EventArgs e)
 		{
+			if (!isValid)
+			{
+				MessageBox.Show("入力に不適切なデータが含まれています。（赤欄）", "入力値エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
 			if (isAdd)
 			{
 				Console.WriteLine("Add Data");
@@ -213,15 +234,22 @@ namespace staut
 			CreateTools.createLabel(PATHLABEL_NAME, PATHLABEL_TEXT, PATHLABEL_LOCATE, allProgPanel);
 			TextBox prognameTextBox = CreateTools.createTextBox(PNBOX_NAME, PNBOX_LOCATE, PNBOX_SIZE, allProgPanel);
 			prognameTextBox.Text = program_name;
+			prognameTextBox.Validating += prognameTextBox_Validating;
 			prognameTextBoxes[numberofProgram] = prognameTextBox;
 			TextBox pathTextBox = CreateTools.createTextBox(PATHBOX_NAME, PATHBOX_LOCATE, PATHBOX_SIZE, allProgPanel);
 			pathTextBox.Text = program_path;
+			pathTextBox.Validating += pathTextBox_Validating;
 			pathTextBoxes[numberofProgram] = pathTextBox;
 			Button button = CreateTools.createButton(PRBUTTON_NAME, PRBUTTON_TEXT, PRBUTTON_TAG, PRBUTTON_LOCATE, PRBUTTON_SIZE, allProgPanel);
 			button.Click += progRefeButton_Click;
 
 			numberofProgram++;
 			return;
+		}
+
+		private void PrognameTextBox_Validating(object sender, CancelEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void DbAdd(SetTitleDbContext db, bool isAdd=true)
@@ -296,5 +324,33 @@ namespace staut
 			}
 			Console.WriteLine();
 		}
+
+		//セットタイトル名の入力チェック
+		private void settitleTextBox_Validating(object sender, CancelEventArgs e)
+		{
+			TextBox textBox = sender as TextBox;
+			if (textBox.Text.Trim().Length == 0)
+			{
+				textBox.BackColor = Color.Red;
+				isValid = false;
+			}
+			else
+			{
+				textBox.BackColor = Color.White;
+				isValid = true;
+			}
+			return;
+		}
+
+		private void prognameTextBox_Validating(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void pathTextBox_Validating(object sender, CancelEventArgs e)
+		{
+
+		}
+
 	}
 }

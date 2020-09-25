@@ -74,6 +74,8 @@ namespace staut
 					titleLabel.LinkClicked += titleLabel_LinkClick;
 
 					Button startupButton = CreateTools.createButton(STARTUPBUTTON_NAME, STARTUPBUTTON_TEXT, STARTUPBUTTON_TAG, STARTUPBUTTON_LOCATE, STARTUPBUTTON_SIZE, panel1);
+					startupButton.Tag = STARTUPBUTTON_TAG;
+					startupButton.Click += startupButton_Click;
 				}				
 			}
 			return;
@@ -108,6 +110,37 @@ namespace staut
 			}
 
 		}
+
+		private void startupButton_Click(object sender, EventArgs e)
+		{
+			using (var db = new SetTitleDbContext())
+			{
+				Button button = sender as Button;
+				int setTitleId = (int)button.Tag;
+				var startupProg_datas = from startupProg in db.StartupProgs
+										where startupProg.SetTitleId == setTitleId
+										orderby startupProg.StartupProgId
+										select startupProg;
+				foreach (var data in startupProg_datas)
+				{
+					try
+					{
+						Console.WriteLine($"{data.StartupProgId}. {data.StartupProgName} = {data.StartupProgPath}");
+						var process = new System.Diagnostics.Process();
+						process.StartInfo.FileName = $"{data.StartupProgPath}";
+						process.StartInfo.UseShellExecute = true;
+						process.Start();
+					}
+					catch (Exception exc)
+					{
+						Console.WriteLine($"ExceptionType: {exc.GetType()}");
+						MessageBox.Show($"{data.StartupProgName}: {data.StartupProgPath}\nパスを確認してください", "ファイルを開くことができませんでした", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						continue;
+					}
+				}
+			}
+		}
+
 
 		//メニューバーの項目がクリックされた場合
 		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
