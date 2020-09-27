@@ -106,7 +106,9 @@ namespace staut
 		{
 			Button button = sender as Button;
 			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.InitialDirectory = Environment.CurrentDirectory;
+			//ユーザのプロファイルディレクトを取得
+			string initialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+			dialog.InitialDirectory = initialDirectory;
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				int tag = Convert.ToInt32(button.Tag);
