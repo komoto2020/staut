@@ -102,13 +102,9 @@ namespace staut
 				DialogResult dialogResult = addEditForm.ShowDialog();
 				if (dialogResult == DialogResult.OK)
 				{
-					InitForm newform = new InitForm();
-					newform.Show();
-					//Form1_Load(null, EventArgs.Empty);
+					FormReload();
 				}
-
 			}
-
 		}
 
 		private void startupButton_Click(object sender, EventArgs e)
@@ -157,8 +153,7 @@ namespace staut
 					addEditForm addeditform = new addEditForm();
 					if (addeditform.ShowDialog() == DialogResult.OK)
 					{
-						InitForm newform = new InitForm();
-						newform.Show();
+						FormReload();
 					}
 					break;
 
@@ -182,6 +177,13 @@ namespace staut
 					}
 					break;
 			}
+		}
+
+		private void FormReload()
+		{
+			Console.WriteLine("FormReloaded");
+			panel1.Controls.Clear();
+			Form1_Load(this, null);
 		}
 	}
 }
