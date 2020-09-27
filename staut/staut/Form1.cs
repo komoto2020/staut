@@ -175,6 +175,7 @@ namespace staut
 						}
 						db.SaveChanges();
 					}
+					FormReload();
 					break;
 			}
 		}
