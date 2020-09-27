@@ -79,8 +79,11 @@ namespace staut
 
 		private void addEditForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!isValid)
+			Console.WriteLine($"CloseReason: {e.CloseReason}");
+			//バリエーションエラー状態で決定ボタンがクリックされたとき
+			if (!isValid && (e.CloseReason == CloseReason.None))
 			{
+				MessageBox.Show("不適切なデータが含まれています。（赤欄）", "入力値エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				e.Cancel = true;
 			}
 		}
@@ -133,12 +136,10 @@ namespace staut
 		}
 
 		//「決定」ボタン
-		//データベース
 		private void decideButton_Click(object sender, EventArgs e)
 		{
 			if (!isValid)
 			{
-				MessageBox.Show("入力に不適切なデータが含まれています。（赤欄）", "入力値エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
